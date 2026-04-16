@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import type { FormEvent } from 'react'
+import { useRef, useState } from 'react'
+import type { FormEvent, KeyboardEvent } from 'react'
 import './DeepSeekChatPage.css'
 
 type ChatRole = 'user' | 'assistant'
@@ -10,6 +10,7 @@ type ChatMessage = {
 }
 
 function DeepSeekChatPage() {
+  const formRef = useRef<HTMLFormElement>(null)
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -131,6 +132,29 @@ function DeepSeekChatPage() {
     }
   }
 
+  const handleTextareaKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key !== 'Enter' || event.nativeEvent.isComposing) return
+
+    if (event.ctrlKey || event.metaKey) {
+      event.preventDefault()
+      const el = event.currentTarget
+      const start = el.selectionStart ?? 0
+      const end = el.selectionEnd ?? 0
+      const value = el.value
+      const next = `${value.slice(0, start)}\n${value.slice(end)}`
+      setInput(next)
+      requestAnimationFrame(() => {
+        el.selectionStart = el.selectionEnd = start + 1
+      })
+      return
+    }
+
+    if (event.shiftKey) return
+
+    event.preventDefault()
+    formRef.current?.requestSubmit()
+  }
+
   return (
     <main className="chat-container">
       <h2>DeepSeek AI Chat</h2>
@@ -149,11 +173,12 @@ function DeepSeekChatPage() {
         )}
       </section>
 
-      <form className="chat-form" onSubmit={sendMessage}>
+      <form ref={formRef} className="chat-form" onSubmit={sendMessage}>
         <textarea
           value={input}
           onChange={(event) => setInput(event.target.value)}
-          placeholder="Ask DeepSeek something..."
+          onKeyDown={handleTextareaKeyDown}
+          placeholder="Ask DeepSeek something... (Enter to send, Ctrl+Enter for new line)"
           rows={4}
         />
         <button type="submit" disabled={isLoading}>
