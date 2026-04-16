@@ -14,10 +14,9 @@ function DeepSeekChatPage() {
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
 
-  const apiKey = import.meta.env.VITE_DEEPSEEK_API_KEY as string | undefined
-  const model = (import.meta.env.VITE_DEEPSEEK_MODEL as string | undefined) ?? 'deepseek-chat'
-  const baseUrl =
-    (import.meta.env.VITE_DEEPSEEK_BASE_URL as string | undefined) ?? 'https://api.deepseek.com'
+  const apiKey = "sk-c3db2583c8f84c89831b3f71aa918fbd"
+  const model = 'deepseek-chat'
+  const baseUrl = 'https://api.deepseek.com'
 
   const sendMessage = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
