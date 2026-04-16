@@ -2,7 +2,7 @@ import type { ChatMessage, DeepSeekChatCompletionResponse } from '../types/deeps
 
 const baseURL =
   (import.meta.env.VITE_DEEPSEEK_BASE_URL as string | undefined) ?? 'https://api.deepseek.com'
-const apiKey = import.meta.env.VITE_DEEPSEEK_API_KEY as string | undefined
+const apiKey = "sk-c3db2583c8f84c89831b3f71aa918fbd"
 const model = (import.meta.env.VITE_DEEPSEEK_MODEL as string | undefined) ?? 'deepseek-chat'
 
 const ensureApiKey = () => {
