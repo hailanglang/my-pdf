@@ -1,0 +1,36 @@
+.app-shell {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.app-nav {
+  display: flex;
+  gap: 10px;
+}
+
+.app-link {
+  text-decoration: none;
+  color: #334155;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+}
+
+.app-link.active {
+  background: #0f766e;
+  color: #ffffff;
+  border-color: #0f766e;
+}
