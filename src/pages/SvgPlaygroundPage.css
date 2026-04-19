@@ -1,0 +1,189 @@
+.svg-playground {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 8px 4px 40px;
+  text-align: left;
+}
+
+.svg-playground-header {
+  margin-bottom: 28px;
+}
+
+.svg-playground-title {
+  font-size: 28px;
+  letter-spacing: -0.5px;
+  margin: 0 0 10px;
+  color: var(--text-h);
+}
+
+.svg-playground-lead {
+  margin: 0;
+  color: var(--text);
+  line-height: 1.55;
+  max-width: 62ch;
+}
+
+.svg-demo-section {
+  margin-bottom: 32px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.svg-demo-section:last-of-type {
+  border-bottom: none;
+}
+
+.svg-demo-section h2 {
+  margin-bottom: 6px;
+}
+
+.svg-demo-desc {
+  margin: 0 0 12px;
+  color: var(--text);
+  max-width: 70ch;
+}
+
+.svg-demo-code {
+  margin: 0 0 12px;
+  padding: 12px 14px;
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow-x: auto;
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--text-h);
+}
+
+.svg-demo-code code {
+  display: block;
+  white-space: pre;
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+}
+
+.svg-demo-frame {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px;
+  background: color-mix(in srgb, var(--bg) 92%, var(--accent) 8%);
+}
+
+.svg-demo-canvas {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+}
+
+.svg-demo-grid-bg {
+  fill: color-mix(in srgb, var(--code-bg) 85%, var(--accent) 15%);
+  stroke: var(--border);
+  stroke-width: 1;
+}
+
+.svg-demo-label {
+  fill: var(--text-h);
+  font-size: 14px;
+  font-family: var(--sans);
+}
+
+.svg-demo-shape-a {
+  fill: color-mix(in srgb, #c4b5fd 70%, var(--bg));
+  stroke: #6d28d9;
+  stroke-width: 2;
+}
+
+.svg-demo-shape-b {
+  fill: color-mix(in srgb, #93c5fd 70%, var(--bg));
+  stroke: #1d4ed8;
+  stroke-width: 2;
+}
+
+.svg-demo-shape-c {
+  fill: color-mix(in srgb, #86efac 70%, var(--bg));
+  stroke: #15803d;
+  stroke-width: 2;
+}
+
+.svg-demo-line {
+  stroke: var(--text-h);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.svg-demo-poly {
+  stroke: var(--accent);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.svg-demo-stroke-cap {
+  vector-effect: non-scaling-stroke;
+}
+
+.svg-demo-canvas--reuse {
+  background: var(--bg);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+
+.svg-demo-use-g {
+  color: var(--text-h);
+}
+
+.svg-demo-use-g--accent {
+  color: var(--accent);
+}
+
+.svg-demo-use-g--muted {
+  color: var(--text);
+  opacity: 0.95;
+}
+
+.svg-demo-canvas--text {
+  color: var(--text-h);
+}
+
+.svg-demo-text-title {
+  fill: currentColor;
+  font-size: 18px;
+  font-weight: 600;
+  font-family: var(--heading);
+}
+
+.svg-demo-text-sub {
+  fill: var(--text);
+  font-size: 14px;
+  font-family: var(--sans);
+}
+
+.svg-demo-anim-row {
+  display: flex;
+  justify-content: center;
+  padding: 8px 0;
+}
+
+.svg-demo-loader {
+  transform-origin: 50% 50%;
+  animation: svg-demo-spin 1.2s linear infinite;
+}
+
+.svg-demo-loader-arc {
+  transform-origin: 24px 24px;
+}
+
+@keyframes svg-demo-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .svg-demo-loader {
+    animation: none;
+  }
+}
