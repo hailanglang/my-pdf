@@ -3,9 +3,12 @@ import DeepSeekChatPage from './pages/DeepSeekChatPage.tsx'
 import FlexPlaygroundPage from './pages/FlexPlaygroundPage.tsx'
 import PdfViewerPage from './pages/PdfViewerPage.tsx'
 import SvgPlaygroundPage from './pages/SvgPlaygroundPage.tsx'
+import CanvasPlaygroundPage from './pages/CanvasPlaygroundPage.tsx'
+import ComplexObjectDemoPage from './pages/ComplexObjectDemoPage/index.tsx'
 import './App.css'
-
 function App() {
+
+
   return (
     <div className="app-shell">
       <header className="app-header">
@@ -36,6 +39,19 @@ function App() {
           >
             SVG 示例
           </NavLink>
+          <NavLink
+            to="/canvas"
+            className={({ isActive }) => (isActive ? 'app-link active' : 'app-link')}
+          >
+            Canvas 示例
+          </NavLink>
+          <NavLink
+            to="/complex-object"
+            className={({ isActive }) => (isActive ? 'app-link active' : 'app-link')}
+          >
+            复杂对象
+          </NavLink>
+
         </nav>
       </header>
 
@@ -44,6 +60,8 @@ function App() {
         <Route path="/chat" element={<DeepSeekChatPage />} />
         <Route path="/flex" element={<FlexPlaygroundPage />} />
         <Route path="/svg" element={<SvgPlaygroundPage />} />
+        <Route path="/canvas" element={<CanvasPlaygroundPage />} />
+        <Route path="/complex-object" element={<ComplexObjectDemoPage />} />
       </Routes>
     </div>
   )

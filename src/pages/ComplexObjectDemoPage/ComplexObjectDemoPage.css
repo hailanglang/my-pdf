@@ -1,0 +1,265 @@
+.complex-object-page {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.complex-object-header {
+  margin-bottom: 28px;
+}
+
+.complex-object-title {
+  margin: 0 0 10px;
+  font-size: 1.65rem;
+  font-weight: 650;
+  color: #0f172a;
+}
+
+.complex-object-lead {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: #475569;
+}
+
+.complex-object-grid {
+  display: grid;
+  gap: 22px;
+}
+
+@media (min-width: 860px) {
+  .complex-object-grid {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+}
+
+.complex-object-panel {
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: #ffffff;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgb(15 23 42 / 6%);
+}
+
+.complex-object-panel-head {
+  padding: 14px 16px;
+  border-bottom: 1px solid #e2e8f0;
+  background: #f8fafc;
+}
+
+.complex-object-panel-head h2 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.complex-object-panel-head p {
+  margin: 6px 0 0;
+  font-size: 0.82rem;
+  color: #64748b;
+  line-height: 1.45;
+}
+
+.complex-object-panel-body {
+  padding: 14px 16px 16px;
+  max-height: min(62vh, 520px);
+  overflow: auto;
+}
+
+.complex-object-json {
+  margin: 0;
+  padding: 12px 14px;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  background: #0f172a;
+  color: #e2e8f0;
+  border-radius: 8px;
+  overflow-x: auto;
+  white-space: pre;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
+    monospace;
+}
+
+.object-tree {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
+    monospace;
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: #334155;
+}
+
+.object-tree-node {
+  margin-left: 0;
+}
+
+.object-tree-children {
+  margin-left: 14px;
+  padding-left: 10px;
+  border-left: 1px solid #e2e8f0;
+}
+
+.object-tree-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 2px 0;
+}
+
+.object-tree-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 4px;
+  background: #f1f5f9;
+  color: #0f766e;
+  font-size: 11px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.object-tree-toggle:hover {
+  background: #e2e8f0;
+}
+
+.object-tree-toggle:disabled {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.object-tree-key {
+  color: #0369a1;
+  font-weight: 500;
+}
+
+.object-tree-colon {
+  color: #94a3b8;
+}
+
+.object-tree-preview {
+  color: #64748b;
+  font-size: 0.75rem;
+}
+
+.object-tree-primitive {
+  word-break: break-word;
+}
+
+.object-tree-null {
+  color: #94a3b8;
+  font-style: italic;
+}
+
+.object-tree-boolean {
+  color: #b45309;
+}
+
+.object-tree-number {
+  color: #7c3aed;
+}
+
+.object-tree-string {
+  color: #15803d;
+}
+
+.object-card-root {
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 14px 16px;
+  background: #fafafa;
+}
+
+.object-card-title {
+  margin: 0 0 4px;
+  font-size: 1.05rem;
+  font-weight: 650;
+  color: #0f172a;
+}
+
+.object-card-meta {
+  margin: 0 0 14px;
+  font-size: 0.82rem;
+  color: #64748b;
+}
+
+.object-card-section {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.object-card-section h3 {
+  margin: 0 0 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #64748b;
+}
+
+.object-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.object-card-tag {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 500;
+  background: #ecfeff;
+  color: #0f766e;
+  border: 1px solid #99f6e4;
+}
+
+.object-card-list {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 0.88rem;
+  color: #334155;
+}
+
+.object-card-list li {
+  margin: 4px 0;
+}
+
+.object-card-nested {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+}
+
+.object-card-nested-title {
+  margin: 0 0 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.object-card-kv {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 12px;
+  font-size: 0.82rem;
+}
+
+.object-card-kv dt {
+  margin: 0;
+  color: #64748b;
+}
+
+.object-card-kv dd {
+  margin: 0;
+  color: #0f172a;
+  word-break: break-word;
+}
