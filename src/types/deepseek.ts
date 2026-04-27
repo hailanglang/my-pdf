@@ -5,11 +5,6 @@ export type ChatMessage = {
   content: string
 }
 
-export type IntentResult = {
-  intent: 'generate_pdf' | 'chat'
-  reason?: string
-}
-
 export type PdfDraft = {
   title: string
   filename: string

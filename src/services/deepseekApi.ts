@@ -1,4 +1,4 @@
-import type { ChatMessage, DeepSeekChatCompletionResponse } from '../types/deepseek'
+import type { ChatMessage, DeepSeekChatCompletionResponse, PdfDraft } from '../types/deepseek'
 import OpenAI from 'openai'
 
 const baseURL = 'https://api.deepseek.com'
@@ -62,8 +62,69 @@ export const streamChatCompletion = async (messages: ChatMessage[]) => {
     model,
     messages,
     temperature,
-    stream: true,
+    stream: false,
     thinking,
     reasoning_effort: reasoningEffort,
   } as never)
+}
+
+export const decidePdfToolCall = async (messages: ChatMessage[]) => {
+  const response = await client.chat.completions.create({
+    model,
+    messages,
+    temperature,
+    stream: false,
+    thinking,
+    reasoning_effort: reasoningEffort,
+    tools: [
+      {
+        type: 'function',
+        function: {
+          name: 'generate_pdf',
+          description: '当用户需要时，生成一个可下载的 pdf 文件。',
+          parameters: {
+            type: 'object',
+            properties: {
+              title: { type: 'string', description: 'PDF title' },
+              filename: { type: 'string', description: 'Target PDF filename' },
+              paragraphs: {
+                type: 'array',
+                items: { type: 'string' },
+                description: '3-8 concise paragraphs as PDF content',
+              },
+            },
+            required: ['title', 'filename', 'paragraphs'],
+            additionalProperties: false,
+          },
+        },
+      },
+    ],
+    tool_choice: 'auto',
+  } as never)
+
+  const message = response.choices?.[0]?.message as
+    | {
+        content?: string | null
+        tool_calls?: Array<{
+          type?: string
+          function?: { name?: string; arguments?: string }
+        }>
+      }
+    | undefined
+  const call = message?.tool_calls?.find(
+    (item) => item.type === 'function' && item.function?.name === 'generate_pdf',
+  )
+  if (!call?.function?.arguments) {
+    return {
+      shouldGeneratePdf: false as const,
+      assistantText: message?.content?.trim() ?? '',
+    }
+  }
+
+  const draft = JSON.parse(call.function.arguments) as PdfDraft
+  return {
+    shouldGeneratePdf: true as const,
+    draft,
+    assistantText: message?.content?.trim() ?? '',
+  }
 }

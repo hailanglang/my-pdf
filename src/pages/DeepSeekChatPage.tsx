@@ -1,8 +1,8 @@
 import { useRef, useState } from 'react'
 import type { FormEvent, KeyboardEvent } from 'react'
-import { chatCompletionJson } from '../services/deepseekApi'
+import { decidePdfToolCall } from '../services/deepseekApi'
 import { streamAssistantReply } from '../services/deepseekStream'
-import type { ChatMessage, IntentResult, PdfDraft } from '../types/deepseek'
+import type { ChatMessage } from '../types/deepseek'
 import { generateSimplePdf } from '../utils/pdf'
 import './DeepSeekChatPage.css'
 
@@ -11,26 +11,6 @@ function DeepSeekChatPage() {
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-
-  const detectIntent = (userText: string) =>
-    chatCompletionJson<IntentResult>(
-      [
-        'You are an intent classifier.',
-        "Output strict JSON with schema: {\"intent\":\"generate_pdf\"|\"chat\",\"reason\":\"...\"}.",
-        'Choose generate_pdf only when user explicitly asks to create/export/generate/download a PDF file.',
-      ].join(' '),
-      userText,
-    )
-
-  const draftPdfContent = (userText: string) =>
-    chatCompletionJson<PdfDraft>(
-      [
-        'You write structured PDF draft data.',
-        'Output strict JSON: {"title":"...","filename":"...","paragraphs":["..."]}.',
-        'paragraphs must be 3-8 concise strings.',
-      ].join(' '),
-      userText,
-    )
 
   const streamChatResponse = async (nextMessages: ChatMessage[], assistantIndex: number) => {
     await streamAssistantReply(nextMessages, (chunk) => {
@@ -54,22 +34,30 @@ function DeepSeekChatPage() {
     setIsLoading(true)
 
     try {
-      const intent = await detectIntent(content)
-      if (intent.intent === 'generate_pdf') {
-        const draft = await draftPdfContent(content)
+      const toolDecision = await decidePdfToolCall(nextMessages)
+      if (toolDecision.shouldGeneratePdf) {
+        const draft = toolDecision.draft
         const filename = await generateSimplePdf(draft)
         setMessages((prev) =>
           prev.map((message, index) =>
             index === assistantIndex
               ? {
                   ...message,
-                  content: `已识别为 PDF 任务，文件已生成并开始下载：${filename}\n标题：${draft.title}`,
+                  content: `已通过 Tool call 触发 PDF 生成，文件已生成并开始下载：${filename}\n标题：${draft.title}`,
                 }
               : message,
           ),
         )
       } else {
-        await streamChatResponse(nextMessages, assistantIndex)
+        if (toolDecision.assistantText) {
+          setMessages((prev) =>
+            prev.map((message, index) =>
+              index === assistantIndex ? { ...message, content: toolDecision.assistantText } : message,
+            ),
+          )
+        } else {
+          await streamChatResponse(nextMessages, assistantIndex)
+        }
       }
     } catch (error) {
       console.error(error)
@@ -112,7 +100,7 @@ function DeepSeekChatPage() {
   return (
     <main className="chat-container">
       <h2>DeepSeek AI Chat</h2>
-      <p>Agent flow: detect intent, then either chat or generate PDF in browser.</p>
+      <p>Agent flow: Tool call decides whether to chat or generate PDF in browser.</p>
       <p>支持自然语言对话，并可按需求自动生成 PDF 文档。</p>
 
       <section className="chat-messages">
