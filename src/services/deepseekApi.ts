@@ -1,42 +1,43 @@
 import type { ChatMessage, DeepSeekChatCompletionResponse } from '../types/deepseek'
+import OpenAI from 'openai'
 
-const baseURL =
-  (import.meta.env.VITE_DEEPSEEK_BASE_URL as string | undefined) ?? 'https://api.deepseek.com'
-const apiKey = "sk-c3db2583c8f84c89831b3f71aa918fbd"
-const model = (import.meta.env.VITE_DEEPSEEK_MODEL as string | undefined) ?? 'deepseek-chat'
+const baseURL = 'https://api.deepseek.com'
+const apiKey = "sk-b0bb5286fa8e4950b07ddfd8d959f686"
+const model = 'deepseek-v4-pro'
+const temperature = 0.7
+const thinking = { type: 'enabled' as const }
+const reasoningEffort = 'high' as const
 
 const ensureApiKey = () => {
   if (!apiKey) {
-    throw new Error('Missing VITE_DEEPSEEK_API_KEY in .env file.')
+    throw new Error('Missing DeepSeek API key.')
   }
   return apiKey
 }
+
+const client = new OpenAI({
+  baseURL,
+  apiKey: ensureApiKey(),
+  dangerouslyAllowBrowser: true,
+})
 
 export const chatCompletion = async (
   messages: ChatMessage[],
   options?: { jsonObject?: boolean },
 ) => {
-  const key = ensureApiKey()
-  const payload: Record<string, unknown> = { model, messages }
+  const payload: Record<string, unknown> = {
+    model,
+    messages,
+    temperature,
+    stream: false,
+    thinking,
+    reasoning_effort: reasoningEffort,
+  }
   if (options?.jsonObject) {
     payload.response_format = { type: 'json_object' }
   }
 
-  const response = await fetch(`${baseURL}/chat/completions`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${key}`,
-    },
-    body: JSON.stringify(payload),
-  })
-
-  if (!response.ok) {
-    const errorText = await response.text()
-    throw new Error(`DeepSeek request failed: ${response.status} ${errorText}`)
-  }
-
-  return (await response.json()) as DeepSeekChatCompletionResponse
+  return (await client.chat.completions.create(payload as never)) as DeepSeekChatCompletionResponse
 }
 
 export const chatCompletionJson = async <T,>(systemPrompt: string, userPrompt: string): Promise<T> => {
@@ -57,24 +58,12 @@ export const chatCompletionJson = async <T,>(systemPrompt: string, userPrompt: s
 }
 
 export const streamChatCompletion = async (messages: ChatMessage[]) => {
-  const key = ensureApiKey()
-  const response = await fetch(`${baseURL}/chat/completions`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${key}`,
-    },
-    body: JSON.stringify({ model, messages, stream: true }),
-  })
-
-  if (!response.ok) {
-    const errorText = await response.text()
-    throw new Error(`DeepSeek request failed: ${response.status} ${errorText}`)
-  }
-
-  if (!response.body) {
-    throw new Error('Streaming is not supported: empty response body.')
-  }
-
-  return response.body
+  return client.chat.completions.create({
+    model,
+    messages,
+    temperature,
+    stream: true,
+    thinking,
+    reasoning_effort: reasoningEffort,
+  } as never)
 }
